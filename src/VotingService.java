@@ -1,51 +1,35 @@
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class VotingService {
     private Question question;
-    private HashMap<String, Set<String>> submissions; // Stores student ID and their submissions
+    private Map<String, String> submissions;
 
-    public VotingService() {
+    public VotingService(Question question) {
+        this.question = question;
         this.submissions = new HashMap<>();
     }
 
-    public void configureQuestion(Question question) {
-        this.question = question;
-    }
-
-    public void submitAnswer(String studentId, String answer) {
-        if (question == null) {
-            throw new IllegalStateException("Question not configured.");
-        }
-
-        if (!question.getCandidateAnswers().contains(answer)) {
-            throw new IllegalArgumentException("Invalid answer.");
-        }
-
-        if (question.getType() == Question.QuestionType.SINGLE_CHOICE) {
-            Set<String> singleAnswerSet = new HashSet<>();
-            singleAnswerSet.add(answer);
-            submissions.put(studentId, singleAnswerSet);
-        } else {
-            submissions.computeIfAbsent(studentId, k -> new HashSet<>()).add(answer);
+    public void submitAnswer(Student student, String answer) {
+        // Check if the answer is valid
+        if (question.getOptions().contains(answer)) {
+            submissions.put(student.getId(), answer);
         }
     }
 
     public void printResults() {
-        HashMap<String, Integer> results = new HashMap<>();
-        for (String answer : question.getCandidateAnswers()) {
-            results.put(answer, 0);
+        Map<String, Integer> resultCounts = new HashMap<>();
+        for (String option : question.getOptions()) {
+            resultCounts.put(option, 0);
         }
 
-        for (Set<String> answers : submissions.values()) {
-            for (String answer : answers) {
-                results.put(answer, results.get(answer) + 1);
-            }
+        for (String answer : submissions.values()) {
+            resultCounts.put(answer, resultCounts.get(answer) + 1);
         }
 
-        for (HashMap.Entry<String, Integer> entry : results.entrySet()) {
+        for (Map.Entry<String, Integer> entry : resultCounts.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
     }
 }
+

@@ -1,32 +1,33 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 public class SimulationDriver {
     public static void main(String[] args) throws Exception {
-        // 1. Create a question type and configure the answers
-        List<String> candidateAnswers = List.of("A", "B", "C", "D");
-        Question question = new Question(Question.QuestionType.SINGLE_CHOICE, candidateAnswers);
+        // Step 1: Create a question and configure answers
+        Question.QuestionType questionType = Question.QuestionType.SINGLE_CHOICE;
+        List<String> options = Arrays.asList("A", "B", "C", "D");
+        Question question = new Question(questionType, options);
 
-        // 2. Configure the question for iVote Service
-        VotingService votingService = new VotingService();
-        votingService.configureQuestion(question);
+        // Step 2: Configure the question for Voting Service
+        VotingService votingService = new VotingService(question);
 
-        // 3. Randomly generate a number of students and their answers
-        int numberOfStudents = 100;
+        // Step 3: Generate students and answers
         List<Student> students = new ArrayList<>();
         Random random = new Random();
+        int numberOfStudents = 100;
 
-        for (int i = 0; i < numberOfStudents; i++) {
-            students.add(new Student("Student" + (i + 1)));
+        for (int i = 1; i <= numberOfStudents; i++) {
+            String studentId = "Student" + i;
+            students.add(new Student(studentId));
+
+            // Randomly select an answer
+            String answer = options.get(random.nextInt(options.size()));
+            votingService.submitAnswer(new Student(studentId), answer);
         }
 
-        // 4. Submit all the students’ answers to iVote Service
-        for (Student student : students) {
-            String randomAnswer = candidateAnswers.get(random.nextInt(candidateAnswers.size()));
-            votingService.submitAnswer(student.getId(), randomAnswer);
-        }
-
-        // 5. Call the Voting Service output function to display the result
+        // Step 4: Print out the results
         votingService.printResults();
+
     }
 }

@@ -8,18 +8,18 @@ public class Question {
     }
 
     private QuestionType type;
-    private List<String> candidateAnswers;
+    private List<String> options;
 
-    public Question(QuestionType type, List<String> candidateAnswers) {
+    public Question(QuestionType type, List<String> options) {
         this.type = type;
-        this.candidateAnswers = candidateAnswers;
+        this.options = options;
     }
 
     public QuestionType getType() {
         return type;
     }
-
-    public List<String> getCandidateAnswers() {
-        return candidateAnswers;
+    public List<String> getOptions() {
+        return options;
     }
+   
 }
