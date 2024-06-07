@@ -6,9 +6,12 @@ import java.util.Scanner;
 
 
 public class VotingService {
+
     private Question question;
+    //map of string to a list of string, 
     private Map<String, List<String>> submissions;
 
+    //constructor
     public VotingService(Question question) {
         this.question = question;
         this.submissions = new HashMap<>();
@@ -21,7 +24,6 @@ public class VotingService {
                 return; // Invalid answer, ignore submission
             }
         }
-
         // Check if the question is SINGLE_CHOICE and ensure only one answer is submitted
         if (question.getType() == Question.QuestionType.SINGLE_CHOICE && answers.size() != 1) {
             return; // Invalid submission for single choice, ignore submission
@@ -33,9 +35,7 @@ public class VotingService {
         }
     
 
-    /**
-     * Accepts user input for student ID and answers, and submits them.
-     */
+    
     public void acceptUserInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your student ID: ");
@@ -45,6 +45,7 @@ public class VotingService {
         List<String> answers = Arrays.asList(answerInput.split("\\s*,\\s*"));
 
         submitAnswers(new Student(studentId), answers);
+
     }
 
     public void printResults() {
