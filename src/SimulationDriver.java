@@ -1,86 +1,48 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class SimulationDriver {
     public static void main(String[] args) {
-         // Step 1: Create and test a single choice question
-         testSingleChoiceQuestion();
+       // Configure single choice question
+       List<String> candidateAnswers1 = Arrays.asList("A", "B", "C", "D");
+       Question singleChoiceQuestion = new SingleChoiceQuestion("What is your favorite color?", candidateAnswers1);
 
-         // Step 2: Create and test a multiple choice question
-         testMultipleChoiceQuestion();
-     }
- 
-     private static void testSingleChoiceQuestion() {
-        System.out.println("Testing Single Choice Question...");
+       // Configure multi choice question
+       List<String> candidateAnswers2 = Arrays.asList("Option 1", "Option 2", "Option 3");
+       Question multiChoiceQuestion = new MultiChoiceQuestion("Select all applicable options:", candidateAnswers2);
 
-        // Create a single choice question and configure answers
-        Question.QuestionType singleChoiceType = Question.QuestionType.SINGLE_CHOICE;
-        List<String> singleChoiceOptions = Arrays.asList("A", "B", "C", "D");
-        Question singleChoiceQuestion = new Question(singleChoiceType, singleChoiceOptions);
+       // Create voting services
+       VotingService votingService1 = new VotingService();
+       votingService1.configureQuestion(singleChoiceQuestion);
 
-        // Configure the question for Voting Service
-        VotingService singleChoiceVotingService = new VotingService(singleChoiceQuestion);
+       VotingService votingService2 = new VotingService();
+       votingService2.configureQuestion(multiChoiceQuestion);
 
-        // Generate students and a predefined answer for single choice
-        generateSubmissions(singleChoiceVotingService, Arrays.asList("A"));
+       // Simulate students and submissions
+       Random random = new Random();
+       int numStudents = 5; // Adjust number of students as needed
+       Student[] students = new Student[numStudents];
+       for (int i = 0; i < numStudents; i++) {
+           students[i] = new Student();
+       }
 
-        // Allow user to submit their answer
-        acceptUserSubmission(singleChoiceVotingService);
+       // Simulate single choice answers
+       for (Student student : students) {
+           String answer = candidateAnswers1.get(random.nextInt(candidateAnswers1.size()));
+           student.submitAnswer(votingService1, Arrays.asList(answer));
+       }
 
-        // Print out the results for single choice
-        singleChoiceVotingService.printResults();
+       // Simulate multi choice answers
+       for (Student student : students) {
+           int numAnswers = random.nextInt(candidateAnswers2.size()) + 1;
+           List<String> answers = candidateAnswers2.subList(0, numAnswers);
+           student.submitAnswer(votingService2, answers);
+       }
+
+       // Print results
+       votingService1.printStatistics();
+       votingService2.printStatistics();
     }
-
-    private static void testMultipleChoiceQuestion() {
-        System.out.println("Testing Multiple Choice Question...");
-
-        // Create a single choice question and configure answers
-        Question.QuestionType multiQuestionType = Question.QuestionType.MULTIPLE_CHOICE;
-        List<String> multiChoiceOptions = Arrays.asList("A", "B", "C", "D");
-        Question multiChoiceQuestion = new Question(multiQuestionType, multiChoiceOptions);
-
-        // Configure the question for Voting Service
-        VotingService multiChoiceVotingService = new VotingService(multiChoiceQuestion);
-
-        // Generate students and a predefined answer for single choice
-        generateSubmissions(multiChoiceVotingService, Arrays.asList("A"));
-
-        // Allow user to submit their answer
-        acceptUserSubmission(multiChoiceVotingService);
-
-        // Print out the results for single choice
-        multiChoiceVotingService.printResults();
-    }
-
-    private static void generateSubmissions(VotingService votingService, List<String> predefinedAnswers) {
-        List<Student> students = new ArrayList<>();
-        int numberOfStudents = 100;
-
-        for (int i = 0; i < numberOfStudents; i++) {
-            // Generate a random student ID
-            String studentId = "Student" + (i + 1); // Generates sequential IDs: Student1, Student2, ...
-            students.add(new Student(studentId));
-
-            // Use predefined answers
-            votingService.submitAnswers(new Student(studentId), predefinedAnswers);
-        }
-    }
-
-    private static void acceptUserSubmission(VotingService votingService) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Would you like to submit an answer? (yes/no): ");
-        String response = scanner.nextLine();
-
-        if (response.equalsIgnoreCase("yes")) {
-            votingService.acceptUserInput();
-        }
-        else if (response.equalsIgnoreCase("no")){
-            System.out.println("ok, printing current question stats");
-        }
-    }
-
 }
+
 
 
