@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Student {
+    //a student has an id and an idcounter
     private static int idCounter = 0;
     private String id;
 
@@ -16,6 +17,7 @@ public class Student {
         return id;
     }
 
+    
     public void submitAnswer(VotingService votingService, List<String> answers) {
         votingService.submitAnswer(this, answers);
     }

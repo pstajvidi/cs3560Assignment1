@@ -7,7 +7,7 @@ public class SimulationDriver {
         Question singleChoiceQuestion = new SingleChoiceQuestion("What is your favorite color?", candidateAnswers1);
 
         // multi choice question
-        List<String> candidateAnswers2 = Arrays.asList("Option 1", "Option 2");
+        List<String> candidateAnswers2 = Arrays.asList("Option 1", "Option 2","Option 3");
         Question multiChoiceQuestion = new MultiChoiceQuestion("Select all applicable options:", candidateAnswers2);
 
         // Create voting services
@@ -19,7 +19,7 @@ public class SimulationDriver {
 
         //create an array of students to generate random answers for
         Random random = new Random();
-        int numStudents = 5; 
+        int numStudents = 10; 
         Student[] students = new Student[numStudents];
         for (int i = 0; i < numStudents; i++) {
             students[i] = new Student();
@@ -39,7 +39,13 @@ public class SimulationDriver {
         System.out.println("\nSimulating multi choice question answers...");
         for (Student student : students) {
             int numAnswers = random.nextInt(candidateAnswers2.size()) + 1;
-            List<String> answers = candidateAnswers2.subList(0, numAnswers);
+            //for some reason the random was not working the way intended and all the student would choose
+            //the first option always so i decided to shuffle them and then submit them for more randomness
+            
+            // Shuffle the candidate answers and pick the first 'numAnswers' elements
+            List<String> shuffledAnswers = new ArrayList<>(candidateAnswers2);
+            Collections.shuffle(shuffledAnswers);
+            List<String> answers = shuffledAnswers.subList(0, numAnswers);
             student.submitAnswer(votingService2, answers);
         }
 
