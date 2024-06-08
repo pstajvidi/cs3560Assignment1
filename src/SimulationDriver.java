@@ -2,11 +2,12 @@ import java.util.*;
 
 public class SimulationDriver {
     public static void main(String[] args) {
+        //single choice question
         List<String> candidateAnswers1 = Arrays.asList("A", "B", "C", "D");
         Question singleChoiceQuestion = new SingleChoiceQuestion("What is your favorite color?", candidateAnswers1);
 
-        // Configure multi choice question
-        List<String> candidateAnswers2 = Arrays.asList("Option 1", "Option 2", "Option 3");
+        // multi choice question
+        List<String> candidateAnswers2 = Arrays.asList("Option 1", "Option 2");
         Question multiChoiceQuestion = new MultiChoiceQuestion("Select all applicable options:", candidateAnswers2);
 
         // Create voting services
@@ -16,15 +17,15 @@ public class SimulationDriver {
         VotingService votingService2 = new VotingService();
         votingService2.configureQuestion(multiChoiceQuestion);
 
-        // Simulate students and submissions
+        //create an array of students to generate random answers for
         Random random = new Random();
-        int numStudents = 20; // Adjust number of students as needed
+        int numStudents = 5; 
         Student[] students = new Student[numStudents];
         for (int i = 0; i < numStudents; i++) {
             students[i] = new Student();
         }
 
-        // Simulate single choice answers
+        // simulate single choice answers
         System.out.println("Simulating single choice question answers...");
         for (Student student : students) {
             String answer = candidateAnswers1.get(random.nextInt(candidateAnswers1.size()));
