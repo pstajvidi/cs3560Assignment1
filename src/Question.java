@@ -9,6 +9,7 @@ public interface Question {
     boolean isValidAnswer(List<String> answers);
 }
 
+//single choice type question need to implement question
 class SingleChoiceQuestion implements Question {
     private String questionText;
     private List<String> candidateAnswers;
@@ -36,6 +37,7 @@ class SingleChoiceQuestion implements Question {
     }
 }
 
+//multi choice questions needs to implement question interface
 class MultiChoiceQuestion implements Question {
     private String questionText;
     private List<String> candidateAnswers;
