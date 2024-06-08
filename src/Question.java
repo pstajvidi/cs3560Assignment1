@@ -3,7 +3,9 @@ import java.util.*;
 //question can become an interface so that it can have multiple different types, like single or multi
 public interface Question {
     String getQuestionText();
-    List<String> getCandidateAnswers();
+
+    List<String> getAnswers();
+    
     boolean isValidAnswer(List<String> answers);
 }
 
@@ -23,7 +25,7 @@ class SingleChoiceQuestion implements Question {
     }
 
     @Override
-    public List<String> getCandidateAnswers() {
+    public List<String> getAnswers() {
         return candidateAnswers;
     }
 
@@ -50,7 +52,7 @@ class MultiChoiceQuestion implements Question {
     }
 
     @Override
-    public List<String> getCandidateAnswers() {
+    public List<String> getAnswers() {
         return candidateAnswers;
     }
 

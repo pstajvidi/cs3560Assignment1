@@ -15,10 +15,9 @@ public class VotingService {
             submissions.put(student.getId(), answers);
         }
     }
-
     public void printStatistics() {
         Map<String, Integer> answerCounts = new HashMap<>();
-        for (String answer : question.getCandidateAnswers()) {
+        for (String answer : question.getAnswers()) {
             answerCounts.put(answer, 0);
         }
 
@@ -28,8 +27,9 @@ public class VotingService {
             }
         }
 
+        System.out.println("Number of students who submitted answers: " + submissions.size());
         System.out.println("Statistics for question: " + question.getQuestionText());
-        for (String answer : question.getCandidateAnswers()) {
+        for (String answer : question.getAnswers()) {
             System.out.println(answer + ": " + answerCounts.get(answer));
         }
     }
